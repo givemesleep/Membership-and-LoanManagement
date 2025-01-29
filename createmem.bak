@@ -1,0 +1,935 @@
+
+<form action="process/proc_newmem.php?inp=1" method="post">
+<!-- f1 Personal Details -->
+<fieldset <?php //echo ($flags != '') ? $basic : 'class="active"' ?>>
+<div class="row g-3">
+    <div class="col-md-12 text-start">
+        <h2><b>Basic Information</b></h2>
+    </div>
+    <div class="col-md-12 text-center">
+        <div class="progress" style="height: 1px;">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+    <!-- <header id=header-background>
+            <h6 class="mt-3"><b>Personal Information</b></h6>
+    </header> -->
+    <input type="hidden" name="basicID" value="<?php echo $memID; ?>">
+    <input type="hidden" name="basicEdit" value="<?php echo $editNo; ?>">
+
+    <div class="col-md-5">
+        <label for="lname" class="form-label">Last Name <span class="required">*</span></label>
+        <input type="text" class="form-control letter" name="surname" id="" value="<?php echo $lastname; ?>" required placeholder="Last Name" style="text-transform: capitalize;" tabindex="1">
+    </div>
+    <div class="col-md-3">
+        <label for="floatingbday" class="form-label">Birthdate <span class="required">*</span></label>
+        <input type="date" class="form-control eyy" name="DOB" id="floatingbday" value="<?php echo $birthdate; ?>" required tabindex="6">
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-5">
+        <label for="fname" class="form-label">First Name <span class="required">*</span></label>  
+        <input type="text" class="form-control letter" name="givenname" id="" value="<?php echo $firstname; ?>" required placeholder="First Name" style="text-transform: capitalize;" tabindex="2">
+    </div>
+    <div class="col-md-3">
+        <label for="floatingmarit" class="form-label">Marital Status<span class="required">*</span></label>
+            <select class="form-select eyy" name="cboMarital" id="floatingmarit" aria-label="State" required placeholder="Select Marital Status" tabindex="7">
+                <option selected value="<?php echo $marital; ?>">Select Marital</option>
+                    <?php                               
+                        $sql = "SELECT * FROM tbmaritals";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->execute();
+
+                        while($row=$stmt->fetch()){
+                            echo '<option value="'.$row['maritID'].'">'.$row['marDep'].'</option>';
+                        }
+                    ?>
+            </select>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-5">
+        <label for="floatingmini" class="form-label">Middle Name </label>
+        <input type="text" class="form-control letter" name="middle" id="" value="<?php echo $middlename; ?>" placeholder="Middle Name" style="text-transform: capitalize;" title="Ex. Santiago" tabindex="3">
+    </div>
+    <div class="col-md-3">
+        <label for="floatinggen" class="form-label">Sex <span class="required">*</span></label>
+            <select class="form-select inpots" name="cboSex" id="floatinggen" value="<?php echo $sex ?>" required placeholder="Select Sex" tabindex="8">
+                <option selected disabled>Select Sex</option>
+                    <?php                               
+                        $sql = "SELECT * FROM tbgenders";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->execute();
+
+                        while($row=$stmt->fetch()){
+                            echo '<option value="'.$row['gendID'].'">'.$row['genders'].'</option>';
+                        } 
+                    ?>
+            </select>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-3">
+        <label for="floatingnick" class="form-label">Nickname <span class="required">*</span></label>
+        <input type="text" class="form-control letter" name="nickname" id="floatingnick" value="<?php echo $nickname; ?>" required placeholder="Nickname" maxlength="15" style="text-transform: capitalize;" title="Ex. Lito" tabindex="4">
+    </div>
+    <div class="col-md-2">
+        <label for="floatingex" class="form-label">Extension</label>
+            <input type="text" class="form-control letter" name="ext" id="floatingex" value="<?php echo $extension; ?>" placeholder="Ex. Jr." maxlength="5" style="text-transform: capitalize;" title="Ex. Jr." tabindex="5">
+    </div>
+    <div class="col-md-7"></div>
+
+    <div class="text-end">
+        <input type="submit" name="next" class="btn btn-primary" value="Next &raquo;" tabindex="9">
+    </div>
+
+</div> <!-- end of row -->
+
+</fieldset>
+</form> 
+
+<form action="process/proc_newmem.php?inp=2" method="post">    
+<!-- f2 Contact Details -->
+<fieldset <?php //echo ($flags != '') ? $addr : '' ?>>
+<div class="row g-3">
+<div class="col-md-12">
+    <h2><b>Contact Information</b></h2>
+</div>
+<div class="col-md-12">
+    <div class="progress" style="height: 1px;">
+        <div class="progress-bar bg-success" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+</div>
+
+<input type="hidden" name="conID" value="<?php echo $memID; ?>">
+<input type="hidden" name="conEdit" value="<?php echo $editNo; ?>">
+
+<div class="col-md-5">
+    <label for="floatingprov" class="form-label">House No. / Street / Subdivision <span class="required">*</span></label>
+    <input type="text" class="form-control" name="street" required tabindex="1" value="<?php echo $house; ?>">
+</div>
+
+<div class="col-md-4">
+    <label for="floatingemail" class="form-label">Email Address <span class="required">*</span></label>
+    <div class="input-group">
+        <!-- <span class="input-group-text">@</span> -->
+        <input type="text" class="form-control" name="email" id="floatingemail" value="<?php echo $email; ?>" required placeholder="llampco@email.com" maxlength="50" tabindex="7">
+    </div>
+</div>
+<div class="col-md-3"></div>
+
+<div class="col-md-5">
+    <label for="floatingprov" class="form-label">Region <span class="required">*</span></label>
+    <select class="form-select inpots" name="cboReg" id="reg" aria-label="State" value="<?php echo $region; ?>" required tabindex="2">
+        <option selected value="0">Select Region</option>
+        <?php 
+            $sql = "SELECT regsID AS ID, regDesc AS reg, regcode AS codes FROM tbreg";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+
+            while($row=$stmt->fetch()){
+                echo '<option value="'.$row['reg'].'">'.$row['reg'].'</option>';
+            }
+        ?>
+    </select>
+</div>
+
+<div class="col-md-4">
+    <label for="floatingmob" class="form-label">Mobile #<span class="required">*</span></label>  
+    <div class="input-group">
+        <!-- <span class="input-group-text">+63</span> -->
+        <input type="text" class="form-control mobile number" name="mob1" id="floatingmob" value="<?php echo $mob1; ?>" required placeholder="639XX-XXXX-XXX" maxlength="12" tabindex="8">
+    </div>
+</div>
+<div class="col-md-3"></div>
+
+<div class="col-md-5">
+    <label for="floatingprov" class="form-label">Province <span class="required">*</span></label>
+    <select class="form-select inpots" name="cboProv" id="prov" aria-label="State" value="<?php echo $province; ?>" required tabindex="3">
+        <option selected >Select Province</option>
+    </select>
+</div>
+
+<div class="col-md-4">
+    <label for="floatingmob" class="form-label">Mobile #</label>  
+    <div class="input-group">
+        <!-- <span class="input-group-text">+63</span> -->
+        <input type="text" class="form-control mobile number" name="mob2" id="floatingmob" value="<?php echo $mob2; ?>" placeholder="639XX-XXXX-XXX" maxlength="12" tabindex="9">
+    </div>
+</div>
+<div class="col-md-3"></div>
+
+<div class="col-md-5">
+    <label for="floatingcit" class="form-label">City <span class="required">*</span></label>  
+    <select class="form-select inpots" name="cboCity" id="cit" aria-label="State" value="<?php echo $municipality; ?>" required tabindex="4">
+        <option selected disabled>Select City</option>
+        
+    </select>
+</div>
+
+<div class="col-md-4">
+    <label for="floatingland" class="form-label">Landline #</label>
+    <div class="input-group">
+        <!-- <span class="input-group-text">+63 (2)</span> -->
+        <input type="text" class="form-control landline number" name="land" id="floatingland" value="<?php echo $land; ?>" placeholder="12xx-xxxx" maxlength="9" tabindex="10">
+    </div>
+</div>
+<div class="col-md-3"></div>
+
+<div class="col-md-3">
+    <label for="floatingcit" class="form-label">Baranggay <span class="required">*</span></label>  
+    <select class="form-select inpots" name="cboBrgy" id="bar" aria-label="State" value="<?php echo $baranggay; ?>" required tabindex="5">
+        <option selected disabled>Select Brgy</option>
+    </select>
+</div>
+<div class="col-md-2">
+    <label for="floatingbrgy" class="form-label">ZIP Code</label>
+    <input type="text" class="form-control" name="zip" id="floatingmob" value="<?php echo $zip; ?>" placeholder="ZIP Code" maxlength="20" tabindex="6">
+</div>
+
+<div class="text-end">
+    <input type="submit" class="btn btn-primary" value="Next &raquo;" tabindex="11">
+</div>                     
+</div>
+</fieldset>
+</form>
+
+<form action="process/proc_newmem.php?inp=3" method="post">
+<!-- f3 Personal Background  -->
+<fieldset  <?php //echo ($flags != '') ? $per : '' ?>>
+<div class="row g-3">
+    <div class="col-md-12">
+        <h2><b>Personal Background</b></h2>
+    </div>
+    <div class="col-md-12">
+        <div class="progress" style="height: 1px;">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 60%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+    
+    <input type="hidden" name="perID" value="<?php echo $memID; ?>">
+    <input type="hidden" name="backEdit" value="<?php echo $editNo; ?>">
+    <!-- Educational -->
+    
+    <div class="col-md-4">
+        <label for="floatinghigh" class="form-label">Highest School Attainment<span class="required">*</span></label>  
+            <select class="form-select inpots" name="cboHigh" id="highest" aria-label="State" value="<?php echo $highschool; ?>" required>
+                <option selected disabled>Select Attainment</option>
+                <?php 
+                    $sql = "SELECT * FROM tbeduclvl";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute();
+
+                    while($row=$stmt->fetch()){
+                        echo '<option value="'.$row['edudescription'].'">'.$row['edudescription'].'</option>';
+                    }
+                    ?>
+            </select>
+    </div>
+    
+    <div class="col-md-4">
+        <label for="floatingbname" class="form-label">Business Name</label>
+        <input type="text" class="form-control letter " name="busname" id="floatingbname" value="<?php echo $busname; ?>" style="text-transform: capitalize;">
+    </div>
+    <div class="col-md-4">
+        <label for="floatingcompany" class="form-label">Company Name</label>
+        <input type="text" class="form-control letter" name="company" id="floatingcompany" value="<?php echo $company; ?>" style="text-transform: capitalize;">
+    </div>
+
+    <div class="col-md-4">
+        <label for="floatingsch" class="form-label">School Name <span class="required">*</span></label>
+        <input type="text" class="form-control letter" name="prevSch" id="floatingsch" value="<?php echo $prevSch; ?>" required style="text-transform: capitalize;" placeholder="Previous/ Last School">
+    </div>
+    
+    <div class="col-md-4">
+        <label for="floatinghigh" class="form-label">Business Type<span class="required">*</span></label>  
+            <select class="form-select inpots" name="busType" id="floatinghigh" aria-label="State" value="<?php echo $busType; ?>" required>
+                <option selected disabled>Select Business</option>
+                <?php 
+                    $Business = array('Sole Proprietorship', 'Partnership', 'Limited Liability Company', 'Corporation');
+                    foreach($Business as $bus){
+                        echo '<option value="'.$bus.'">'.$bus.'</option>';
+                    }
+                    
+                    ?>
+            </select>
+    </div>
+    <div class="col-md-4">
+        <label for="floatinghigh" class="form-label">Occupation Type<span class="required">*</span></label>  
+            <input type="text" class="form-control" name="occuType" value="<?php echo $occuType; ?>">
+    </div>
+    <div class="col-md-4">
+        <label for="floatingcour" class="form-label">Track/Program</label>
+            <select class="form-select" name="cboPrograms" id="course" aria-label="State" value="<?php echo $courID; ?>">
+                <option selected>Select Course</option>
+            </select>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="text-end">
+        <input type="submit"class="btn btn-primary" value="Next &raquo;">
+    </div>                            
+</div>
+</fieldset>
+</form>
+
+<form action="process/proc_newmem.php?inp=4" method="post">
+<!-- f6 Other Information  -->
+<fieldset <?php //echo ($flags != '') ? $oth : '' ?>>  
+<div class="row g-3">
+    <div class="col-md-12">
+        <h2><b>Other Information</b></h2>
+    </div>
+    <div class="col-md-12">
+        <div class="progress" style="height: 1px;">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+
+    <input type="hidden" name="othersID" value="<?php echo $memID; ?>">
+    <input type="hidden" name="othEdit" value="<?php echo $editNo; ?>">
+
+    <div class="col-md-4">
+        <label for="floatingincome" class="form-label">Monthly Income <span class="required">*</span></label>
+        <select class="form-select inpots" name="monthly" id="floatingincome" aria-label="State" value="<?php echo $monthly; ?>" required placeholder="Select Monthly Income">
+        <option selected disabled>Select Monthly</option>
+            <?php
+                $sql = "SELECT * FROM tbmonthly";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+
+                while($row=$stmt->fetch()){
+                    echo '<option value="'.$row['monthlyID'].'">'.$row['monthlySize'].'</option>';
+                }
+            ?>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label for="floatingresi" class="form-label">Residential Type<span class="required">*</span></label>
+        <select class="form-select inpots" name="cboResi" id="floatingresi" aria-label="State" placeholder="" value="<?php echo $resi; ?>" required placeholder="Select Residential Status">
+        <option selected disabled>Select Type</option>
+            <?php
+                $sql = "SELECT * FROM tbresistats";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+
+                while($row=$stmt->fetch()){
+                    echo '<option value="'.$row['resiStatusID'].'">'.$row['resiStatus'].'</option>';
+                }
+            ?>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label for="floatingsoc" class="form-label">Social Interest</label>
+        <textarea name="soc" class="form-control letter" value="<?php echo $soc;?>" id="" cols="0" rows="1" style="text-transform: capitalize;"></textarea>
+    </div>
+
+    <div class="col-md-4">
+        <label for="floatingsss" class="form-label">SSS No. <span class="required">*</span></label>
+        <input type="text" class="form-control number SSS" name="sss" id="SSS"  value="<?php echo $sss; ?>" required placeholder="12-XXXXXXX-X" maxlength="12">
+    </div>
+
+    <div class="col-md-4">
+        <label for="floatingstatus" class="form-label">Residential Status<span class="required">*</span></label>
+        <select class="form-select inpots" name="cboResiID" id="floatingstatus" aria-label="State" placeholder="" value="<?php echo $resiID; ?>" required placeholder="Select Residential Info">
+        <option selected disabled>Select Status</option>
+            <?php
+                $sql = "SELECT * FROM tbinfostats";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+
+                while($row=$stmt->fetch()){
+                    echo '<option value="'.$row['othInfoID'].'">'.$row['InfoStats'].'</option>';
+                }
+            ?>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label for="floatinghob" class="form-label">Hobbies</label>
+        <textarea name="hob" class="form-control letter" value="<?php echo $hob; ?>" id="" cols="0" rows="1" style="text-transform: capitalize;"></textarea>
+    </div>
+
+    <div class="col-md-4">
+        <label for="floatingtax" class="form-label">Tax Identification No. <span class="required">*</span></label>
+        <input type="text" class="form-control number TIN" name="tin" id="TIN" value="<?php echo $tin; ?>" required placeholder="123-XXX-XXX-XXX" maxlength="15">
+    </div>
+
+    <div class="col-md-4">
+        <label for="floatingstay" class="form-label">Residential Stay<span class="required">*</span></label>
+        <input type="date" class="form-control inpots" name="resyear" id="floatingstay" value="<?php echo $resyear; ?>" required>
+    </div>
+
+    <div class="col-md-4">
+        <label for="floatingstay" class="form-label">Other Cooperatives</label>
+        <input type="text" class="form-control inpots" name="coop" id="floatingstay" value="<?php echo $coop; ?>" placeholder="(Please add N/A if none)">
+    </div>
+
+    <div class="col-md-4">
+        <label for="otherId" class="form-label" >Other ID type </label>
+        <select class="form-select" name="cboID" id="otherId" aria-label="State" value="<?php echo $othID ?>" placeholder="Select Other ID">
+        <option selected disabled>Select Other ID</option>
+            <?php
+            $sql = "SELECT * FROM tbids";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+
+            while($row=$stmt->fetch()){
+                echo '<option value="'.$row['idTypesID'].'">'.$row['typeDesc'].'</option>';
+            }      
+            ?>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label for="floatingotherno" class="form-label">Other ID No.</label>
+        <input type="text" class="form-control" name="othID" value="<?php echo $othIDno; ?>" maxlength="19">
+    </div>
+    
+    <div class="col-md-4"></div>
+
+    <div class="text-end">
+        <input type="submit" class="btn btn-success" value="Save">
+    </div>
+
+    </div> <!-- end of row -->
+
+</fieldset>
+</form>
+
+<!-- f6 Preview Information  -->
+<fieldset class="active" <?php echo ($flags != '') ? $prev : '' ?>>  
+<div class="row g-3">
+<div class="col-md-12">
+    <h2><b>Information Preview</b></h2>
+</div>
+<div class="col-md-12">
+    <div class="progress" style="height: 1px;">
+        <div class="progress-bar bg-success" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+</div>
+
+<input type="hidden" name="prevID" value="<?php echo $memID; ?>">
+        
+<div class="accordion accordion-flush" id="accordionFlushExample">
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            Basic Information
+            </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+                <div class="row g-3">
+
+                    
+                    <?php 
+                        //Preview Basic
+
+                        //Empty
+                        $ln = $fn = $mn = $ext = $nick = $bday = $marit = $sex = '';
+
+                        $sqlpb = "SELECT * FROM tbperinfo WHERE memberID=?";
+                        $datapb = array($memID);
+                        $stmtpb = $conn->prepare($sqlpb);
+                        $stmtpb->execute($datapb);
+                        $rowpb = $stmtpb->fetch();
+
+                        $ln = $rowpb['memSur']; $fn = $rowpb['memGiven']; $mn = $rowpb['memMiddle']; $ext = $rowpb['suffixes']; 
+                        $nick = $rowpb['memNick']; $bday = $rowpb['memDOB']; $marit = $rowpb['maritID']; $sex = $rowpb['gendID'];
+
+                    ?>
+
+                    <div class="col-md-6">
+                        <h6>Last Name : <?php echo $ln; ?></h6>
+                        <h6>First Name : <?php echo $fn; ?></h6>
+                        <h6>Middle Name : <?php echo $mn; ?></h6>
+                        <h6>Extension : <?php echo $ext; ?></h6>
+                        <h6>Nickname : <?php echo $nick; ?></h6>
+                    </div>
+
+                    <div class="col-md-6">
+                    <h6>Birthdate : <?php echo $bday; ?></h6>
+                    <h6>Marital Status : <?php echo $marit; ?></h6>
+                    <h6>Sex : <?php echo $sex; ?></h6>
+                    </div>
+
+                    <div class="text-end">
+                        <a href="admin_addmem.php?flag=1&editNo=<?php echo $memID; ?>"><button class="btn btn-success">Edit</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+            Contact Information
+            </button>
+        </h2>
+        <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+                <div class="row g-3">
+
+                    <?php 
+
+                        //Empty Variables
+                        $hs = $rg = $pr = $mc = $br = $zp = $em = $mb1 = $mb2 = $ll = '';
+
+                        $sqladdr = "SELECT * FROM tbconinfo WHERE memberID=?";
+                        $dataaddr = array($memID);
+                        $stmtaddr = $conn->prepare($sqladdr);
+                        $stmtaddr->execute($dataaddr);
+                        $rowaddr = $stmtaddr->fetch();
+
+                        $hr = $rowaddr['memaddr']; $rg = $rowaddr['regsID']; $pr = $rowaddr['provID']; $mc = $rowaddr['citID']; $br = $rowaddr['brgyID']; 
+                        $zp = $rowaddr['zipcode']; $em = $rowaddr['mememail']; $mb1 = $rowaddr['memmob1']; $mb2 = $rowaddr['memmob2']; $ll = $rowaddr['memlan'];
+
+                    ?>
+
+                    <div class="col-md-6">
+                        <h6>House No. / Street / Subdivision : <?php echo $hs; ?></h6>
+                        <h6>Region : <?php echo $rg; ?></h6>
+                        <h6>Province : <?php echo $pr; ?></h6>
+                        <h6>Municipality : <?php echo $mc ?></h6>
+                        <h6>Baranggay : <?php echo $br; ?></h6>
+                        <h6>ZIP Code : <?php echo $zp; ?></h6>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6>Email Address : <?php echo $em; ?></h6>
+                        <h6>(1) Mobile No. <?php echo $mb1; ?></h6>
+                        <h6>(2) Mobile No. <?php echo $mb2; ?></h6>
+                        <h6>Landline No. <?php echo $ll; ?></h6>
+                    </div>
+
+                    <div class="text-end">
+                        <a href="admin_addmem.php?flag=2&editNo=<?php $memID; ?>"><button class="btn btn-success">Edit</button></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+            Background Information
+            </button>
+        </h2>
+        <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+                <div class="row g-3">
+
+                    <?php 
+                    
+                    //Empty Variables
+                    $ha = $sn = $tp = $bn = $bt = $cn = $ot = '';
+
+                    $sqldi = "SELECT * FROM tbeducinfo WHERE memberID=?";
+                    $datadi = array($memID);
+                    $stmtdi = $conn->prepare($sqldi);
+                    $stmtdi->execute($datadi);
+                    $rowdi = $stmtdi->fetch();
+
+                    $ha = $rowdi['educ'];
+
+                    ?>
+
+                    <div class="col-md-4">
+                        <h6>Highest Attainment : <?php ?></h6>
+                        <h6>School Name : <?php ?></h6>
+                        <h6>Track / Program : <?php ?></h6>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <h6>Business Name : <?php ?></h6>
+                        <h6>Business Type : <?php ?></h6>
+                    </div>
+                    
+                    <div class="col-md-4">
+                    <h6>Company Nama : <?php ?></h6>
+                    <h6>Occupation Type :  <?php ?></h6>
+                    </div>
+                
+                    <div class="text-end">
+                        <a href="admin_addmem.php?flag=3&editNo=<?php $memID; ?>"><button class="btn btn-success">Edit</button></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingFour">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+            Other Information
+            </button>
+        </h2>
+        <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+                        <h6>Monthly Income : <?php ?></h6>
+                        <h6>SSS No. <?php ?></h6>
+                        <h6>TIN No. <?php ?></h6>
+                        <h6>Other ID : <?php ?></h6>
+                        <h6>ID No. <?php ?></h6>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h6>Residential Type : <?php ?></h6>
+                        <h6>Residential Status : <?php ?></h6>
+                        <h6>Residential Stay : <?php ?></h6>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h6>Social Interest : <?php ?></h6>
+                        <h6>Hobbies : <?php ?></h6>
+                        <h6>Other Cooperatives : <?php ?></h6>
+                    </div>
+
+                    <div class="text-end">
+                        <a href="admin_addmem.php?flag=4&editNo=<?php $memID; ?>"><button class="btn btn-success">Edit</button></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <?php 
+        $uniks = '';
+        $sqlmemID = "SELECT * FROM tbuninfo WHERE memberID = ?";
+        $datamemID = array($memID);
+        $stmtmem = $conn->prepare($sqlmemID);
+        $stmtmem->execute($datamemID);
+        $rowmem = $stmtmem->fetch();
+        $uniks = $rowmem['unID'];
+        
+    ?>
+
+    <div class="text-end mt-5">
+        <a href="admin_pendings.php"><button class="btn btn-secondary">View Pending</button></a>
+        <a href="admin_paypmes.php?pmes=<?php echo  $uniks; ?>"><button class="btn btn-primary">Go PMES</button></a>
+    </div>
+</div>
+
+</div> <!-- end of row -->
+</fieldset>
+
+
+
+
+
+
+
+
+
+
+                    <div class="row g-3">
+                        <div class="col-md-12 text-start">
+                            <h2><b>Pre-Membership Education Seminar</b></h2>
+                        </div>
+                        <div class="col-md-6">
+                          <h6><b>Name : <?php echo $Pangalan; ?></b></h6>
+                          <h6><b>Member ID : <?php echo $accID; ?> </b></h6>
+                        </div>
+                        <div class="col-md-6">
+                          <h6><b>Email : <?php echo $Email; ?></b></h6>
+                          <h6><b>Apply Date : <?php echo $ApplyDate; ?></b></h6>
+                        </div>
+                        <!-- <div class="col-md-12 text-center">
+                            <div class="progress">
+                                <div id="step1" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:70%" ></div>
+                            </div>
+                        </div> -->
+                        <div class="col-md-12">
+                          <input type="hidden" value="<?php echo $memID; ?>" name="memID">
+                        </div>
+
+                        <div class="col-md-3">
+                          <label for="validationCustom04" class="form-label">Trained By <span class="required">*</span></label>
+                            <select class="form-select" id="validationCustom04" name="conducts" required>
+                              <option selected disabled value="">Select Accompany</option>
+                              <?php 
+                                $sqlCon="SELECT * FROM tbconducts";
+                                $stmtCon=$conn->prepare($sqlCon);
+                                $stmtCon->execute();
+                                while($rows=$stmtCon->fetch()){
+                                  echo '<option value="'.$rows['conductID'].'">'.$rows['conName'].'</option>';
+                                }
+                              ?>
+                            </select>
+                          <div class="invalid-feedback">Please select person name.</div>
+                        </div>
+
+                        <div class="col-md-3">
+                          <label for="referral" class="form-label">Referred By</label>
+                            <select class="form-select" id="referral" name="memName">
+                              <option selected disabled value="">Select Referral</option>
+                              <?php 
+                                $sqlName = "SELECT memberID, CONCAT(IF(gendID = 1, 'Mrs. ', 'Mr. '), memSur, '', memGiven, '', memMiddle, '', suffixes) AS Fullname 
+                                          FROM tbperinfo WHERE memstatID = 1";
+                                $stmtName = $conn->prepare($sqlName);
+                                $stmtName->execute();
+                                while($rowName = $stmtName->fetch()){
+                                  echo '<option value="'.$rowName['memberID'].'">'.$rowName['Fullname'].'</option>';
+                                }
+                              
+                              ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6"></div>
+
+                        
+
+                        <div class="col-md-6"></div>
+                        
+                        
+                        <div class="col-md-6"></div>
+
+                        
+
+                        <div class="mt-5 text-end">
+                          <input type="submit" name="submit" class="btn btn-success" value="Save">
+                        </div>
+
+                    </div> <!-- end of row -->
+            
+                  </fieldset>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table class="table datatable table-hover">
+<thead style="width: 100%;">
+<tr>
+<th scope="col" style="width: 40%;">Deposit Type</th>
+<th scope="col" style="width: 30%;" class="text-end">Total Amount</th>
+<th scope="col" style="width: 30%;" class="text-end">Action</th>
+</tr>
+</thead>
+<tbody>
+<?php 
+$sqlDep = "SELECT regSav AS Regular, shareCap AS PSC, timeDep AS TD, speVol AS speVol, speSav AS speSav, funSav AS funSav 
+        FROM tbdepinfo WHERE memberID = ?";
+$dataDep = array($memID);
+$stmtDep = $conn->prepare($sqlDep);
+$stmtDep->execute($dataDep);
+$rowDep = $stmtDep->fetch();
+$reg = $rowDep['Regular']; $psc = $rowDep['PSC']; $td = $rowDep['TD'];
+$sv = $rowDep['speVol']; $ss = $rowDep['speSav']; $fs = $rowDep['funSav'];
+
+$Deposit = array($reg, $psc, $td, $sv, $ss, $fs);
+$i = 0;
+$sqlDepType = "SELECT depDesc FROM tbdepType";
+$stmtDepType = $conn->prepare($sqlDepType);
+$stmtDepType->execute();
+$list = '';
+
+while($i < count($Deposit)){
+while($res=$stmtDepType->fetch()){
+$btn='<a href=""><button class="btn btn-dark"><i class="ri-eye-fill"></i></button></a>';
+$list.='
+    <tr>
+    <td>'.$res['depDesc'].'</td>
+    <td class="text-end">&#8369; '.number_format($Deposit[$i], 2).'</td>
+    <td class="text-end" title="View Transaction Detail">'.$btn.'</td>
+    </tr>
+';
+$i++;
+}
+}
+
+echo $list;
+
+?>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table class="table datatable table-hover">
+                      <thead style="width: 100%;">
+                        <tr>
+                          <th scope="col" style="width: 40%;">Deposit Type</th>
+                          <th scope="col" style="width: 30%;" class="text-end">Total Amount</th>
+                          <th scope="col" style="width: 30%;" class="text-end">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php 
+                          $sqlDep = "SELECT regSav AS Regular, shareCap AS PSC, timeDep AS TD, speVol AS speVol, speSav AS speSav, funSav AS funSav 
+                                    FROM tbdepinfo WHERE memberID = ?";
+                          $dataDep = array($memID);
+                          $stmtDep = $conn->prepare($sqlDep);
+                          $stmtDep->execute($dataDep);
+                          $rowDep = $stmtDep->fetch();
+                          $reg = $rowDep['Regular']; $psc = $rowDep['PSC']; $td = $rowDep['TD'];
+                          $sv = $rowDep['speVol']; $ss = $rowDep['speSav']; $fs = $rowDep['funSav'];
+
+                          $Deposit = array($reg, $psc, $td, $sv, $ss, $fs);
+                          $i = 0;
+                          $sqlDepType = "SELECT depDesc FROM tbdepType";
+                          $stmtDepType = $conn->prepare($sqlDepType);
+                          $stmtDepType->execute();
+                          $list = '';
+
+                        while($i < count($Deposit)){
+                          while($res=$stmtDepType->fetch()){
+                            $btn='<a href=""><button class="btn btn-dark"><i class="ri-eye-fill"></i></button></a>';
+                            $list.='
+                              <tr>
+                              <td>'.$res['depDesc'].'</td>
+                              <td class="text-end">&#8369; '.number_format($Deposit[$i], 2).'</td>
+                              <td class="text-end" title="View Transaction Detail">'.$btn.'</td>
+                              </tr>
+                            ';
+                            $i++;
+                          }
+                        }
+                         
+                          echo $list;
+
+
+                          /*
+                          <div class="col-md-4">
+                            <div class="card" style="height: 130px; border: 1px solid;">
+                              <div class="card-body">
+                                <div class="row mt-3">
+
+                                  <div class="col-md-8 mt-2">
+                                    <h6>Deposit Type</h6>
+                                  </div>
+                                  <div class="col-md-4 text-end">
+                                    <button class="btn btn-dark"><i class="ri-eye-fill"></i></button>
+                                  </div>
+                                  <div class="col-md-12 mt-2">
+                                    <h4><b>Deposit</b></h4>
+                                    <h6><b>Total : </b></h6>
+                                  </div>
+                    
+                                
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          */
+                        ?>
+                      </tbody>
+                    </table>
+
+
+
+
+
+                     <table class="table datatable table-hover">
+                      <thead style="width: 100%;">
+                        <tr>
+                          <th scope="col" style="width: 20%;">Loan</th>
+                          <th scope="col" style="width: 20%;" class="text-end">Total Amount</th>
+                          <th scope="col" style="width: 10%;" class="text-end">Terms</th>
+                          <th scope="col" style="width: 10%;" class="text-center">Loan Status</th>
+                          <th scope="col" style="width: 10%;" class="text-end">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php 
+                        //   $sqlDep = "SELECT regSav AS Regular, shareCap AS PSC, timeDep AS TD, speVol AS speVol, speSav AS speSav, funSav AS funSav 
+                        //             FROM tbdepinfo WHERE memberID = ?";
+                        //   $dataDep = array($memID);
+                        //   $stmtDep = $conn->prepare($sqlDep);
+                        //   $stmtDep->execute($dataDep);
+                        //   $rowDep = $stmtDep->fetch();
+                        //   $reg = $rowDep['Regular']; $psc = $rowDep['PSC']; $td = $rowDep['TD'];
+                        //   $sv = $rowDep['speVol']; $ss = $rowDep['speSav']; $fs = $rowDep['funSav'];
+
+                        //   $Deposit = array($reg, $psc, $td, $sv, $ss, $fs);
+                        //   $i = 0;
+                        //   $sqlDepType = "SELECT depDesc FROM tbdepType";
+                        //   $stmtDepType = $conn->prepare($sqlDepType);
+                        //   $stmtDepType->execute();
+                        //   $list = '';
+
+                        // while($i < count($Deposit)){
+                        //   while($res=$stmtDepType->fetch()){
+                        //     $btn='<a href=""><button class="btn btn-dark"><i class="ri-eye-fill"></i></button></a>';
+                        //     $list.='
+                        //       <tr>
+                        //       <td>'.$res['depDesc'].'</td>
+                        //       <td class="text-end">&#8369; '.$Deposit[$i].'</td>
+                        //       <td class="text-end" title="View Transaction Detail">'.$btn.'</td>
+                        //       </tr>
+                        //     ';
+                        //     $i++;
+                        //   }
+                        // }
+                         
+                        //   echo $list;
+
+                        ?>
+                      </tbody>
+                    </table>
+
+<?php 
+
+require_once '../cruds/config.php';
+$Masterlist = "SELECT 
+                p.memberID AS ID, un.unID AS UniqueID,
+                CONCAT(p.memSur,', ', p.memGiven, ' ', p.memMiddle, ' ', p.suffixes) AS Fullname,
+                CONCAT(c.memaddr, ' ', c.region, ' ', c.city, ' ', c.brgy, ' ') AS Address,
+                m.marDep AS Marital, g.genders AS Gender,  TIMESTAMPDIFF(YEAR, birth, CURDATE()) AS Age
+            FROM tbperinfo p
+            JOIN tbuninfo un ON p.memberID = un.memberID
+            JOIN tbconinfo c ON p.memberID = c.memberID
+            JOIN tbmaritals m ON p.maritID = m.maritID
+            JOIN tbgenders g ON p.gendID = g.gendID
+            WHERE p.memstatID = 1 AND p.isActive = 1";
+$stmtMaster = $conn->prepare($Masterlist);
+$stmtMaster->execute();
+$resM = $stmtMaster->rowCount();
+if($resM > 0){
+    $i = 0;
+    while($rowM = $stmtMaster->fetch()){
+        $counting = $i;
+        $a = $rowM['ID']; // Member ID
+        $b = $rowM['UniqueID']; // Unique ID
+        $c = $rowM['Fullname']; // Fullname
+        $d = $rowM['Address']; // Address
+        $e = $rowM['Marital']; // Marital 
+        $f = $rowM['Gender']; // Gender
+        $g = $rowM['Age']; // Age
+
+        $i++;
+    }
+}else{
+    echo 'No Data';
+}
+
+
+?>

@@ -1,0 +1,1699 @@
+<?php
+    require_once 'cruds/config.php';
+    require_once 'cruds/current_user.php';
+
+    //Empty Variables (Avoids Undefined Error)
+    $memID = ''; $flags = ''; $editNo = $icons = '';
+    $basic = ''; $addr = ''; $per =''; $oth = ''; $prev = '';
+
+    //Basic Variables(Empty)
+    $lastname = $firstname = $middlename = $extension = $nickname = $birthdate = $marital = $sex = '';
+    
+    //Contact Variables(Empty)
+    $house = $region = $province = $municipality = $baranggay = $zip = $email = $mob1 = $mob2 = $land = '';
+
+    //Personal Variables(Empty)
+    $highschool = $prevSch = $course = $busname = $company = $busType = $occuType = $courID = '';
+
+    //Other Variables(Empty)
+    $monthly = $resi = $soc = $sss = $resiID = $hob = $tin = $resyear = $coop = $othID = $othIDno = '';
+
+    //For Dropdowns
+    $genders = $maritals = $regs = $provs = $cits = $bgys = $highs = $progs = $busi = $months = $govID = $resis = $infos = '';
+
+
+    /*
+    
+    <div class="col-md-2 mt-5 text-start"<span><i <?php echo ($flags != '') ? 'class="bi bi-check-lg"' : 'class="bi bi-circle"' ?>></i></span></div>
+    <div class="col-md-10 mt-5 text-start">
+        <h6 <?php echo ($flags != '') ? 'class="text-secondary"' : 'class="text-dark"' ?>><b>Basic Info</b></h6>
+    </div>
+    <div class="col-md-2 mt-3 text-start"<span><i <?php echo ($flags == 2 ) ? 'class="bi bi-circle"' : 'class="bi bi-check-lg"' ?> ></i></span></div>
+    <div class="col-md-10 mt-3 text-start">
+        <h6 <?php echo ($flags == '') ? 'class="text-secondary"' : 'class="text-dark"' ?>><b>Contact Info</b></h6>
+    </div>
+    <div class="col-md-2 mt-3 text-start"<span><i <?php echo ($flags == 3) ? '' : 'class="bi bi-check-lg"' ?>></i></span></div>
+    <div class="col-md-10 mt-3 text-start">
+        <h6 <?php echo ($flags == '') ? 'class="text-secondary"' : 'class="text-dark"' ?>><b>Personal Info</b></h6>
+    </div>
+    <div class="col-md-2 mt-3 text-start"<span><i <?php echo ($flags == 4) ? '' : 'class="bi bi-check-lg"' ?>></i></span></div>
+    <div class="col-md-10 mt-3 text-start">
+        <h6 <?php echo ($flags == '') ? 'class="text-secondary"' : 'class="text-dark"' ?>><b>Other Info</b></h6>
+    </div>
+    <div class="col-md-2 mt-3 text-start"<span><i <?php echo ($flags == 5) ? 'class="bi bi-bookmark-fill"' : 'class="bi bi-bookmark-fill"' ?>></i></span></div>
+    <div class="col-md-10 mt-3 text-start">
+        <h6 <?php echo ($flags == '') ? 'class="text-secondary"' : 'class="text-dark"' ?>><b>Preview</b></h6>
+    </div>
+    
+    */
+
+    /*
+    
+    <div class="col-md-2 mt-5 text-start"<span><iclass="bi bi-circle"></i></span></div>
+    <div class="col-md-10 mt-5 text-start">
+        <h6 class="text-secondary"><b>Basic Info</b></h6>
+    </div>
+    <div class="col-md-2 mt-3 text-start"<span><i <?php echo ($flags == 2 ) ? 'class="bi bi-circle"' : 'class="bi bi-check-lg"' ?> ></i></span></div>
+    <div class="col-md-10 mt-3 text-start">
+        <h6 <?php echo ($flags == '') ? 'class="text-secondary"' : 'class="text-dark"' ?>><b>Contact Info</b></h6>
+    </div>
+    <div class="col-md-2 mt-3 text-start"<span><i <?php echo ($flags == 3) ? '' : 'class="bi bi-check-lg"' ?>></i></span></div>
+    <div class="col-md-10 mt-3 text-start">
+        <h6 <?php echo ($flags == '') ? 'class="text-secondary"' : 'class="text-dark"' ?>><b>Personal Info</b></h6>
+    </div>
+    <div class="col-md-2 mt-3 text-start"<span><i <?php echo ($flags == 4) ? '' : 'class="bi bi-check-lg"' ?>></i></span></div>
+    <div class="col-md-10 mt-3 text-start">
+        <h6 <?php echo ($flags == '') ? 'class="text-secondary"' : 'class="text-dark"' ?>><b>Other Info</b></h6>
+    </div>
+    <div class="col-md-2 mt-3 text-start"<span><i <?php echo ($flags == 5) ? 'class="bi bi-bookmark-fill"' : 'class="bi bi-bookmark-fill"' ?>></i></span></div>
+    <div class="col-md-10 mt-3 text-start">
+        <h6 <?php echo ($flags == '') ? 'class="text-secondary"' : 'class="text-dark"' ?>><b>Preview</b></h6>
+    </div>
+    
+    */
+
+
+
+    //Flags for Active Fieldset
+    if(isset($_GET['flags'])){
+        $flags = $_GET['flags'];
+        // $icons = '';
+        switch($flags){
+            case 1:
+                $basic = 'class="active"';
+                $icons = '
+                <div class="col-md-2 mt-5 text-start"<span><i class="bi bi-circle"></i></span></div>
+                <div class="col-md-10 mt-5 text-start">
+                    <h6 class="text-secondary"><b>Basic Info</b></h6>
+                </div>
+                <div class="col-md-2 mt-5 text-start"<span><i class="bi bi-circle"></i></span></div>
+                <div class="col-md-10 mt-5 text-start">
+                    <h6 class="text-secondary"><b>Contact Info</b></h6>
+                </div>
+                <div class="col-md-2 mt-5 text-start"<span><i class="bi bi-circle"></i></span></div>
+                <div class="col-md-10 mt-5 text-start">
+                    <h6 class="text-secondary"><b>Personal Info</b></h6>
+                </div>
+                <div class="col-md-2 mt-5 text-start"<span><i class="bi bi-circle"></i></span></div>
+                <div class="col-md-10 mt-5 text-start">
+                    <h6 class="text-secondary"><b>Other Info</b></h6>
+                </div>
+                <div class="col-md-2 mt-5 text-start"<span><i class="bi bi-circle"></i></span></div>
+                <div class="col-md-10 mt-5 text-start">
+                    <h6 class="text-secondary"><b>Preview</b></h6>
+                </div>
+                ';
+                break;
+            case 2:
+                $addr = 'class="active"';
+            break;
+            case 3:
+                $per = 'class="active"';
+            break;
+            case 4:
+                $oth = 'class="active"';
+            break;
+            case 5:
+                $prev = 'class="active"';
+            break;
+            default:
+            $icons = '
+                <div class="col-md-2 mt-5 text-start"<span><i class="bi bi-circle"></i></span></div>
+                <div class="col-md-10 mt-5 text-start">
+                    <h6 class="text-secondary"><b>Basic Info</b></h6>
+                </div>
+                <div class="col-md-2 mt-5 text-start"<span><i class="bi bi-circle"></i></span></div>
+                <div class="col-md-10 mt-5 text-start">
+                    <h6 class="text-secondary"><b>Contact Info</b></h6>
+                </div>
+                <div class="col-md-2 mt-5 text-start"<span><i class="bi bi-circle"></i></span></div>
+                <div class="col-md-10 mt-5 text-start">
+                    <h6 class="text-secondary"><b>Personal Info</b></h6>
+                </div>
+                <div class="col-md-2 mt-5 text-start"<span><i class="bi bi-circle"></i></span></div>
+                <div class="col-md-10 mt-5 text-start">
+                    <h6 class="text-secondary"><b>Other Info</b></h6>
+                </div>
+                <div class="col-md-2 mt-5 text-start"<span><i class="bi bi-circle"></i></span></div>
+                <div class="col-md-10 mt-5 text-start">
+                    <h6 class="text-secondary"><b>Preview</b></h6>
+                </div>
+                ';
+            break;
+        }
+    }
+
+    //Last ID (Current ID)
+    if(isset($_GET['lastID'])){
+        $memID = $_GET['lastID'];
+    }
+
+    //Fetching ID and Edit IT
+    if(isset($_GET['editNo'])){
+        $editNo = $_GET['editNo'];
+
+        //Basic Information
+        $sqlBasic = "SELECT * FROM tbperinfo WHERE memberID=?";
+        $dataBasic = array($editNo);
+        $stmtBasic = $conn->prepare($sqlBasic);
+        $stmtBasic->execute($dataBasic);
+        $rowBasic = $stmtBasic->fetch();   
+
+        //Contact Information
+        $sqlCon = "SELECT * FROM tbconinfo WHERE memberID=?";
+        $dataCon = array($editNo);
+        $stmtCon = $conn->prepare($sqlCon);
+        $stmtCon->execute($dataCon);
+        $rowCon = $stmtCon->fetch();
+
+        //Personal Background
+        $sqlPer = "SELECT * FROM tbeducinfo WHERE memberID=?";
+        $dataPer = array($editNo);
+        $stmtPer = $conn->prepare($sqlPer);
+        $stmtPer->execute($dataPer);
+        $rowPer = $stmtPer->fetch();
+
+        $sqlWork = "SELECT * FROM tbworkinfo WHERE memberID=?";
+        $dataWork = array($editNo);
+        $stmtWork = $conn->prepare($sqlWork);
+        $stmtWork->execute($dataWork);
+        $rowWork = $stmtWork->fetch();
+
+        //Other Information
+        // $sqlID = "SELECT * FROM tbidinfo WHERE memberID=?";
+        // $dataID = array($editNo);
+        // $stmtID = $conn->prepare($sqlID);
+        // $stmtID->execute($dataID);
+        // $rowID = $stmtID->fetch();
+
+        $sqlOth = "SELECT * FROM tbotherinfo WHERE memberID=?";
+        $dataOth = array($editNo);
+        $stmtOth = $conn->prepare($sqlOth);
+        $stmtOth->execute($dataOth);
+        $rowOth = $stmtOth->fetch();
+
+
+        //Rows
+        //Basic Row Fetch
+        $lastname = $rowBasic['memSur']; $firstname = $rowBasic['memGiven']; $middlename = $rowBasic['memMiddle']; $nickname = $rowBasic['memNick'];
+        $extension = $rowBasic['suffixes'];  $birthdate = $rowBasic['memDOB']; $marital = $rowBasic['maritID']; $sex = $rowBasic['gendID'];
+
+        //Contact Row Count 
+        $house = $rowCon['memaddr']; $region = $rowCon['region']; $province = $rowCon['province']; 
+        $municipality = $rowCon['city']; $baranggay = $rowCon['brgy']; $zip = $rowCon['zipcode']; 
+        $email = $rowCon['mememail']; $mob1 = $rowCon['memmob1']; $mob2 = $rowCon['memmob2']; $land = $rowCon['memlan'];
+        
+        //Personal Row Count
+        $highschool = $rowPer['highest']; $prevSch = $rowPer['schlName']; $course = $rowPer['program'];
+        $busname = $rowWork['memBusInfo']; $busType = $rowWork['memBusType']; 
+        $company = $rowWork['memCompName']; $occuType = $rowWork['memOccuInfo'];
+
+        //Other Row Count 
+        $monthly = $rowWork['monthlyID']; 
+        // $sss = $rowID['SSSno']; $tin = $rowID['taxIdenNo']; $othID = $rowID['idTypesID']; $othIDno = $rowID['idTypeNo'];
+        $resi = $rowOth['othInfoID']; $resiID = $rowOth['resID']; 
+        $soc = $rowOth['socint']; $hob = $rowOth['hobbies']; $coop = $rowOth['coop']; $resyear = $rowOth['yearStay'];
+
+
+
+        $sqlmarit = "SELECT marDep FROM tbmaritals WHERE maritID = ?";
+        $datamarit = array($rowBasic['maritID']);
+        $stmtmarit = $conn->prepare($sqlmarit);
+        $stmtmarit->execute($datamarit);
+        $rowmarit = $stmtmarit->fetch();
+        $maritals = $rowmarit['marDep'];
+
+        $sqlmarit = "SELECT genders FROM tbgenders WHERE gendID = ?";
+        $datamarit = array($rowBasic['gendID']);
+        $stmtmarit = $conn->prepare($sqlmarit);
+        $stmtmarit->execute($datamarit);
+        $rowmarit = $stmtmarit->fetch();
+        $genders = $rowmarit['genders'];
+
+        $sqlregs = "SELECT regDesc FROM tbreg WHERE regDesc = ?";
+        $dataregs = array($rowCon['region']);
+        $stmtregs = $conn->prepare($sqlregs);
+        $stmtregs->execute($dataregs);
+        $rowregs = $stmtregs->fetch();
+        $regs = $rowregs['regDesc'];
+
+        $sqlprovs = "SELECT provDesc FROM tbprovince WHERE provDesc = ?";
+        $dataprovs = array($rowCon['province']);
+        $stmtprovs = $conn->prepare($sqlprovs);
+        $stmtprovs->execute($dataprovs);
+        $rowprovs = $stmtprovs->fetch();
+        $provs = $rowprovs['provDesc'];
+
+        $sqlcits = "SELECT citymunDesc FROM tbmuni WHERE citymunDesc = ? LIMIT 1000";
+        $datacits = array($rowCon['city']);
+        $stmtcits = $conn->prepare($sqlcits);
+        $stmtcits->execute($datacits);
+        $rowcits = $stmtcits->fetch();
+        $cits = $rowcits['citymunDesc'];
+
+        $sqlbgys = "SELECT brgyDesc FROM tbbrgys WHERE brgyDesc = ? LIMIT 1000";
+        $databgys = array($rowCon['brgy']);
+        $stmtbgys = $conn->prepare($sqlbgys);
+        $stmtbgys->execute($databgys);
+        $rowbgys = $stmtbgys->fetch();
+        $bgys = $rowbgys['brgyDesc'];
+
+        $sqlhighs = "SELECT edudescription FROM tbeduclvl WHERE edudescription = ?";
+        $datahighs = array($rowPer['highest']);
+        $stmthighs = $conn->prepare($sqlhighs);
+        $stmthighs->execute($datahighs);
+        $rowhighs = $stmthighs->fetch();
+        $highs = $rowhighs['edudescription'];
+
+        if($course == 'N/A'){
+            $progs = "None";
+        }else{
+            $sqlprogs = "SELECT courseDesc FROM tbcourses WHERE courseDesc = ?";
+            $dataprogs = array($rowPer['program']);
+            $stmtprogs = $conn->prepare($sqlprogs);
+            $stmtprogs->execute($dataprogs);
+            $rowprogs = $stmtprogs->fetch();
+            $progs = $rowprogs['courseDesc'];
+        }
+
+        $sqlmonths = "SELECT monthlySize FROM tbmonthly WHERE monthlyID = ?";
+        $datamonths = array($rowWork['monthlyID']);
+        $stmtmonths = $conn->prepare($sqlmonths);
+        $stmtmonths->execute($datamonths);
+        $rowmonths = $stmtmonths->fetch();
+        $months = $rowmonths['monthlySize'];
+
+        if($othID == 0){
+
+        }else{
+            $sqlgovID = "SELECT typeDesc FROM tbids WHERE idTypesID = ?";
+            $datagovID = array($rowID['idTypesID']);
+            $stmtgovID = $conn->prepare($sqlgovID);
+            $stmtgovID->execute($datagovID);
+            $rowgovID = $stmtgovID->fetch();
+            $govID = $rowgovID['typeDesc'];
+        }
+
+        if($resiID == 0){
+        
+        }else{
+            $sqlresis = "SELECT resiStatus FROM tbresistats WHERE resID = ?";
+            $dataresis = array($rowOth['resID']);
+            $stmtresis = $conn->prepare($sqlresis);
+            $stmtresis->execute($dataresis);
+            $rowresis = $stmtresis->fetch();
+            $resis = $rowresis['resiStatus'];
+        }
+
+        $sqlinfos = "SELECT InfoStats FROM tbinfostats WHERE othInfoID = ?";
+        $datainfos = array($rowOth['othInfoID']);
+        $stmtinfos = $conn->prepare($sqlinfos);
+        $stmtinfos->execute($datainfos);
+        $rowinfos = $stmtinfos->fetch();
+        $infos = $rowinfos['InfoStats'];
+    }
+
+?>  
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>LLAMPCO | New Membership</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/llampcologo.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+  <style>
+    #header-background{
+      background-color: #3260ab;
+      padding:1px;
+      padding-left: 10px;
+      color: white;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+    .required{
+      color:red;
+    }
+    form label{
+      font-weight: 600;
+    }
+    fieldset {
+    display: none;
+    }
+    fieldset.active {
+    display: block;
+    }
+    .gosh{
+        margin-top: 70px;
+        padding-left: 275px;
+        padding-right: 275px;
+    }
+    .centered-label{
+        text-align: center;
+    }
+    .step1{
+        text-align: center;
+    }
+    footer{
+        text-align: center;
+    }
+  </style>
+
+<?php 
+require_once 'sidenavs/headers.php'; 
+$pages = 'applications'; $nav=''; require_once 'sidenavs/admin_side.php';;
+?>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Membership</h1>
+      <nav>
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="admin_index.php">Dashboard</a></li>
+              <li class="breadcrumb-item">Membership Accounts</li>
+              <li class="breadcrumb-item active">Member Masterlist</li>
+              
+          </ol>
+      </nav>
+  </div><!-- End Page Title -->
+    <section class="section">
+        <div class="row">
+            <!-- <div class="col-lg-2"></div> -->
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-body">
+
+                        <form action="process/proc_newmem.php?inp=1" method="post" class="mt-5">
+                            <!-- f1 Personal Details -->
+                            <fieldset  <?php echo ($flags != '') ? $basic : 'class="active"' ?>>
+                                <div class="row g-3">
+                                    <div class="col-md-12 text-start">
+                                        <h2><b>Basic Information</b></h2>
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        <div class="progress" style="height: 1px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    <!-- <header id=header-background>
+                                            <h6 class="mt-3"><b>Personal Information</b></h6>
+                                    </header> -->
+                                    <input type="hidden" name="basicID" value="<?php echo $memID; ?>">
+                                    <input type="hidden" name="basicEdit" value="<?php echo $editNo; ?>">
+
+                                    <div class="col-md-6">
+                                        <label for="lname" class="form-label">Last Name <span class="required">*</span></label>
+                                        <input type="text" class="form-control letter" name="surname" id="" value="<?php echo $lastname; ?>" required placeholder="Last Name" style="text-transform: capitalize;" tabindex="1">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="floatingbday" class="form-label">Birthdate <span class="required">*</span></label>
+                                        <input type="date" class="form-control eyy" name="DOB" id="dateformat" value="<?php echo $birthdate; ?>" required tabindex="6">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="fname" class="form-label">First Name <span class="required">*</span></label>  
+                                        <input type="text" class="form-control letter" name="givenname" id="" value="<?php echo $firstname; ?>" required placeholder="First Name" style="text-transform: capitalize;" tabindex="2">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="floatingmarit" class="form-label">Marital Status<span class="required">*</span></label>
+                                            <select class="form-select eyy" name="cboMarital" id="floatingmarit" aria-label="State" required tabindex="7">
+                                                <option selected value="<?php echo $marital; ?>"><?php echo ($marital != '') ? $maritals : 'Select Maritals' ?></option>
+                                                    <?php                               
+                                                        $sql = "SELECT * FROM tbmaritals";
+                                                        $stmt = $conn->prepare($sql);
+                                                        $stmt->execute();
+
+                                                        while($row=$stmt->fetch()){
+                                                            echo '<option value="'.$row['maritID'].'">'.$row['marDep'].'</option>';
+                                                        }
+                                                    ?>
+                                            </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="floatingmini" class="form-label">Middle Name </label>
+                                        <input type="text" class="form-control letter" name="middle" id="" value="<?php echo $middlename; ?>" placeholder="Middle Name" style="text-transform: capitalize;" title="Ex. Santiago" tabindex="3">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="floatinggen" class="form-label">Sex <span class="required">*</span></label>
+                                            <select class="form-select inpots" name="cboSex" id="floatinggen" required tabindex="8">
+                                                <option selected value="<?php echo ($sex != '') ? $sex : '' ?>"><?php echo ($genders != '') ? $genders : 'Select Sex' ?></option>
+                                                    <?php                               
+                                                        $sql = "SELECT * FROM tbgenders";
+                                                        $stmt = $conn->prepare($sql);
+                                                        $stmt->execute();
+
+                                                        while($row=$stmt->fetch()){
+                                                            echo '<option value="'.$row['gendID'].'">'.$row['genders'].'</option>';
+                                                        } 
+                                                    ?>
+                                            </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="floatingnick" class="form-label">Nickname <span class="required">*</span></label>
+                                        <input type="text" class="form-control letter" name="nickname" id="floatingnick" value="<?php echo $nickname; ?>" required placeholder="Nickname" maxlength="15" style="text-transform: capitalize;" title="Ex. Lito" tabindex="4">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="floatingex" class="form-label">Extension</label>
+                                            <input type="text" class="form-control letter" name="ext" id="floatingex" value="<?php echo $extension; ?>" placeholder="Ex. Jr." maxlength="5" style="text-transform: capitalize;" title="Ex. Jr." tabindex="5">
+                                    </div>
+                                    <div class="col-md-6"></div>
+
+                                    <div class="text-end">
+                                        <input type="submit" name="next" class="btn btn-primary" value="Next &raquo;" tabindex="9">
+                                    </div>
+
+                                </div> <!-- end of row -->
+                            </fieldset>
+                        </form> 
+
+                        <form action="process/proc_newmem.php?inp=2" method="post">    
+                            <!-- f2 Contact Details -->
+                            <fieldset  <?php echo ($flags != '') ? $addr : '' ?>>
+                                <div class="row g-3">
+                                <div class="col-md-12">
+                                    <h2><b>Contact Information</b></h2>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="progress" style="height: 1px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="conID" value="<?php echo $memID; ?>">
+                                <input type="hidden" name="conEdit" value="<?php echo $editNo; ?>">
+
+                                <div class="col-md-6">
+                                    <label for="floatingprov" class="form-label">House No. / Street / Subdivision <span class="required">*</span></label>
+                                    <input type="text" class="form-control" name="street" required tabindex="1" value="<?php echo $house; ?>">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="floatingemail" class="form-label">Email Address <span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <!-- <span class="input-group-text">@</span> -->
+                                        <input type="text" class="form-control" name="email" id="floatingemail" value="<?php echo $email; ?>" required placeholder="llampco@email.com" maxlength="50" tabindex="7">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="floatingprov" class="form-label">Region <span class="required">*</span></label>
+                                    <select class="form-select inpots" name="cboReg" id="reg" aria-label="State" required tabindex="2">
+                                        <option selected value="<?php echo ($region != '') ? $region : '' ?>"><?php echo ($regs != '') ? $regs : 'Select Region' ?></option>
+                                        <?php 
+                                            $sql = "SELECT regsID AS ID, regDesc AS reg, regcode AS codes FROM tbreg";
+                                            $stmt = $conn->prepare($sql);
+                                            $stmt->execute();
+
+                                            while($row=$stmt->fetch()){
+                                                echo '<option value="'.$row['reg'].'">'.$row['reg'].'</option>';
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="floatingmob" class="form-label">Mobile #<span class="required">*</span></label>  
+                                    <div class="input-group">
+                                        <!-- <span class="input-group-text">+63</span> -->
+                                        <input type="text" class="form-control mobile number" name="mob1" id="floatingmob" value="<?php echo $mob1; ?>" required placeholder="639XX-XXXX-XXX" maxlength="12" tabindex="8">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="floatingprov" class="form-label">Province <span class="required">*</span></label>
+                                    <select class="form-select inpots" name="cboProv" id="prov" aria-label="State" required tabindex="3">
+                                        <option selected value="<?php echo ($province != '') ? $province : '' ?>"><?php echo ($provs != '') ? $provs : 'Select Province' ?></option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="floatingmob" class="form-label">Mobile #</label>  
+                                    <div class="input-group">
+                                        <!-- <span class="input-group-text">+63</span> -->
+                                        <input type="text" class="form-control mobile number" name="mob2" id="floatingmob" value="<?php echo $mob2; ?>" placeholder="639XX-XXXX-XXX" maxlength="12" tabindex="9">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="floatingcit" class="form-label">City <span class="required">*</span></label>  
+                                    <select class="form-select inpots" name="cboCity" id="cit" aria-label="State" required tabindex="4">
+                                        <option selected value="<?php echo ($municipality != '') ? $municipality : '' ?>"><?php echo ($cits != '') ? $cits : 'Select Cities' ?></option> 
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="floatingland" class="form-label">Landline #</label>
+                                    <div class="input-group">
+                                        <!-- <span class="input-group-text">+63 (2)</span> -->
+                                        <input type="text" class="form-control landline number" name="land" id="floatingland" value="<?php echo $land; ?>" placeholder="12xx-xxxx" maxlength="9" tabindex="10">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="floatingcit" class="form-label">Baranggay <span class="required">*</span></label>  
+                                    <select class="form-select inpots" name="cboBrgy" id="bar" aria-label="State" required tabindex="5">
+                                        <option selected value="<?php echo ($baranggay != '') ? $baranggay : '' ?>"><?php echo ($bgys != '') ? $bgys : 'Select Cities' ?></option> 
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="floatingbrgy" class="form-label">ZIP Code</label>
+                                    <input type="text" class="form-control" name="zip" id="floatingmob" value="<?php echo $zip; ?>" placeholder="ZIP Code" maxlength="20" tabindex="6">
+                                </div>
+
+                                <div class="text-end">
+                                    <input type="submit" class="btn btn-primary" value="Next &raquo;" tabindex="11">
+                                </div>                     
+                                </div>
+                            </fieldset>
+                        </form>
+
+                        <form action="process/proc_newmem.php?inp=3" method="post">
+                            <!-- f3 Personal Background  -->
+                            <fieldset <?php echo ($flags != '') ? $per : '' ?>>
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <h2><b>Personal Background</b></h2>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="progress" style="height: 1px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 60%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <input type="hidden" name="perID" value="<?php echo $memID; ?>">
+                                    <input type="hidden" name="backEdit" value="<?php echo $editNo; ?>">
+                                    <!-- Educational -->
+                                    
+                                    <div class="col-md-4">
+                                        <label for="floatinghigh" class="form-label">Highest School Attainment<span class="required">*</span></label>  
+                                            <select class="form-select inpots" name="cboHigh" id="highest" aria-label="State" required tabindex="1">
+                                                <option selected value="<?php echo ($highschool != '') ? $highschool : '' ?>"><?php echo ($highs != '') ? $highs : 'Select Highest' ?></option>
+                                                <?php 
+                                                    $sql = "SELECT * FROM tbeduclvl";
+                                                    $stmt = $conn->prepare($sql);
+                                                    $stmt->execute();
+
+                                                    while($row=$stmt->fetch()){
+                                                        echo '<option value="'.$row['edudescription'].'">'.$row['edudescription'].'</option>';
+                                                    }
+                                                    ?>
+                                            </select>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <label for="floatingbname" class="form-label">Business Name</label>
+                                        <input type="text" class="form-control letter " name="busname" id="floatingbname" value="<?php echo $busname; ?>" style="text-transform: capitalize;" tabindex="4">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="floatingcompany" class="form-label">Company Name</label>
+                                        <input type="text" class="form-control letter" name="company" id="floatingcompany" value="<?php echo $company; ?>" style="text-transform: capitalize;" tabindex="6">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="floatingsch" class="form-label">School Name <span class="required">*</span></label>
+                                        <input type="text" class="form-control letter" name="prevSch" id="floatingsch" value="<?php echo $prevSch; ?>" required style="text-transform: capitalize;" placeholder="Previous/ Last School" tabindex="2">
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <label for="floatinghigh" class="form-label">Business Type</label>  
+                                            <select class="form-select inpots" name="busType" id="floatinghigh" aria-label="State" tabindex="5">
+                                                <option selected value="<?php echo ($busType != '') ? $busType : '' ?>"><?php echo ($busType != '') ? $busType : 'Select Business' ?></option>
+                                                <?php 
+                                                    $Business = array('Sole Proprietorship', 'Partnership', 'Limited Liability Company', 'Corporation');
+                                                    foreach($Business as $bus){
+                                                        echo '<option value="'.$bus.'">'.$bus.'</option>';
+                                                    }
+                                                    
+                                                    ?>
+                                            </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="floatinghigh" class="form-label">Occupation Type</label>  
+                                            <input type="text" class="form-control" name="occuType" value="<?php echo $occuType; ?>" tabindex="7">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="floatingcour" class="form-label">Track/Program</label>
+                                            <select class="form-select" name="cboPrograms" id="course" aria-label="State" tabindex="3">
+                                                <option selected value="<?php echo ($courID != '') ? $courID : '' ?>"><?php echo ($progs != '') ? $progs : 'Select Track/Course' ?></option>
+                                            </select>
+                                    </div>
+                                    <!-- <div class="col-md-4"></div> -->
+                                    <div class="col-md-4">
+                                        <label for="floatingincome" class="form-label">Monthly Income <span class="required">*</span></label>
+                                        <select class="form-select inpots" name="monthly" id="floatingincome" aria-label="State" required tabindex="1">
+                                            <option selected value="<?php echo ($monthly != '') ? $monthly : '' ?>"><?php echo ($months != '') ? $months : 'Select Business' ?></option>
+                                            <?php
+                                                $sql = "SELECT * FROM tbmonthly";
+                                                $stmt = $conn->prepare($sql);
+                                                $stmt->execute();
+
+                                                while($row=$stmt->fetch()){
+                                                    echo '<option value="'.$row['monthlyID'].'">'.$row['monthlySize'].'</option>';
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="text-end">
+                                        <input type="submit"class="btn btn-primary" value="Next &raquo;" tabindex="10">
+                                    </div>                            
+                                </div>
+                            </fieldset>
+                        </form>
+
+                        <form action="process/proc_newmem.php?inp=4" method="post">
+                            <!-- f6 Other Information  -->
+                            <fieldset <?php echo ($flags != '') ? $oth : '' ?>>  
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <h2><b>Other Information</b></h2>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="progress" style="height: 1px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" name="othersID" value="<?php echo $memID; ?>">
+                                    <input type="hidden" name="othEdit" value="<?php echo $editNo; ?>">
+
+                                    <div class="col-md-6">
+                                        <label for="floatingresi" class="form-label">Residential Type<span class="required">*</span></label>
+                                        <select class="form-select inpots" name="cboResi" id="floatingresi" aria-label="State" requiredtabindex="1">
+                                            <option selected value="<?php echo ($resiID != '') ? $resiID : '' ?>"><?php echo ($resis != '') ? $resis : 'Select Residential Type' ?></option>
+                                            <?php
+                                                $sql = "SELECT * FROM tbresistats";
+                                                $stmt = $conn->prepare($sql);
+                                                $stmt->execute();
+
+                                                while($row=$stmt->fetch()){
+                                                    echo '<option value="'.$row['resID'].'">'.$row['resiStatus'].'</option>';
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="floatingsoc" class="form-label">Social Interest</label>
+                                        <textarea name="soc" class="form-control letter" id="" cols="0" rows="1" style="text-transform: capitalize;"  tabindex="9"><?php echo $soc;?></textarea>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="floatingstatus" class="form-label">Residential Status<span class="required">*</span></label>
+                                        <select class="form-select inpots" name="cboResiID" id="floatingstatus" aria-label="State" required tabindex="7">
+                                        <option selected value="<?php echo ($resi != '') ? $resi : '' ?>"><?php echo ($infos != '') ? $infos : 'Select Residential Info' ?></option>
+                                            <?php
+                                                $sql = "SELECT * FROM tbinfostats";
+                                                $stmt = $conn->prepare($sql);
+                                                $stmt->execute();
+
+                                                while($row=$stmt->fetch()){
+                                                    echo '<option value="'.$row['othInfoID'].'">'.$row['InfoStats'].'</option>';
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="floatinghob" class="form-label">Hobbies</label>
+                                        <textarea name="hob" class="form-control letter" id="" cols="0" rows="1" style="text-transform: capitalize;" tabindex="10"><?php echo $hob; ?></textarea>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="floatingstay" class="form-label">Residential Stay<span class="required">*</span></label>
+                                        <input type="date" class="form-control inpots" name="resyear" id="floatingstay" value="<?php echo $resyear; ?>" required  tabindex="8">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="floatingstay" class="form-label">Other Cooperatives</label>
+                                        <input type="text" class="form-control inpots" name="coop" id="floatingstay" value="<?php echo $coop; ?>" placeholder="Optional Cooperatives"  tabindex="11">
+                                    </div>
+
+                                    <div class="text-end">
+                                        <input type="submit" class="btn btn-success" value="Save"  tabindex="12">
+                                    </div>
+
+                                </div> <!-- end of row -->
+                            </fieldset>
+                        </form>
+
+                        <!-- f6 Preview Information  -->
+                        <fieldset <?php echo ($flags != '') ? $prev : '' ?>>  
+                            <div class="row g-3">
+                            <div class="col-md-12">
+                                <h2><b>Information Preview</b></h2>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="progress" style="height: 1px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="prevID" value="<?php echo $memID; ?>">
+                                    
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        Basic Information
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+
+                                                
+                                                <?php 
+                                                    //Preview Basic
+
+                                                    //Empty
+                                                    $ln = $fn = $mn = $ext = $nk = $bday = $mr = $sx = '';
+
+                                                    $sqlpb = "SELECT 
+                                                                p.memSur AS Surname, p.memGiven AS Firstname, p.memMiddle AS Middlename, p.suffixes AS suffix,
+                                                                p.memNick AS Nickname, s.marDep AS Marital, g.genders AS Gender, p.memDOB AS Birthdate
+                                                            FROM tbperinfo p
+                                                            JOIN tbmaritals s ON p.maritID = s.maritID 
+                                                            JOIN tbgenders g ON p.gendID = g.gendID 
+                                                            WHERE p.memberID=?";
+                                                    $datapb = array($memID);
+                                                    $stmtpb = $conn->prepare($sqlpb);
+                                                    $stmtpb->execute($datapb);
+                                                    $rowpb = $stmtpb->fetch();
+
+                                                    $ln = $rowpb['Surname']; $fn = $rowpb['Firstname']; $mn = $rowpb['Middlename']; $ext = $rowpb['suffix']; 
+                                                    $nk = $rowpb['Nickname']; $bday = $rowpb['Birthdate']; $mr = $rowpb['Marital']; $sx = $rowpb['Gender'];
+
+                                                ?>
+
+                                                <div class="col-md-6">
+                                                    <h6>Last Name : <?php echo $ln; ?></h6>
+                                                    <h6>First Name : <?php echo $fn; ?></h6>
+                                                    <h6>Middle Name : <?php echo $mn; ?></h6>
+                                                    <h6>Extension : <?php echo $ext; ?></h6>
+                                                    <h6>Nickname : <?php echo $nk; ?></h6>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                <h6>Birthdate : <?php echo $bday; ?></h6>
+                                                <h6>Marital Status : <?php echo $mr; ?></h6>
+                                                <h6>Sex : <?php echo $sx; ?></h6>
+                                                </div>
+
+                                                <div class="text-end">
+                                                    <a href="admin_addmem.php?flags=1&editNo=<?php echo $memID; ?>"><button class="btn btn-success">Edit</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                        Contact Information
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+
+                                                <?php 
+
+                                                    //Empty Variables
+                                                    $hs = $rg = $pr = $mc = $br = $zp = $em = $mb1 = $mb2 = $ll = '';
+
+                                                    $sqladdr = "SELECT 
+                                                                    memaddr AS house, region, province, city, brgy, zipcode,
+                                                                    memmob1 AS Mobile1, memmob2 AS Mobile2, memlan AS Landlines,
+                                                                    mememail AS Email
+                                                                FROM tbconinfo 
+                                                                WHERE memberID=?";
+                                                    $dataaddr = array($memID);
+                                                    $stmtaddr = $conn->prepare($sqladdr);
+                                                    $stmtaddr->execute($dataaddr);
+                                                    $rowaddr = $stmtaddr->fetch();
+
+                                                    $hs = $rowaddr['house']; $rg = $rowaddr['region']; $pr = $rowaddr['province']; $mc = $rowaddr['city']; $br = $rowaddr['brgy']; 
+                                                    $zp = $rowaddr['zipcode']; $em = $rowaddr['Email']; $mb1 = $rowaddr['Mobile1']; $mb2 = $rowaddr['Mobile2']; $ll = $rowaddr['Landlines'];
+
+                                                ?>
+
+                                                <div class="col-md-6">
+                                                    <h6>House No. / Street / Subdivision : <?php echo $hs; ?></h6>
+                                                    <h6>Region : <?php echo $rg; ?></h6>
+                                                    <h6>Province : <?php echo $pr; ?></h6>
+                                                    <h6>Municipality : <?php echo $mc ?></h6>
+                                                    <h6>Baranggay : <?php echo $br; ?></h6>
+                                                    <h6>ZIP Code : <?php echo $zp; ?></h6>
+                                                </div>
+                                                
+                                                <div class="col-md-6">
+                                                    <h6>Email Address : <?php echo $em; ?></h6>
+                                                    <h6>(1) Mobile No. <?php echo $mb1; ?></h6>
+                                                    <h6>(2) Mobile No. <?php echo $mb2; ?></h6>
+                                                    <h6>Landline No. <?php echo $ll; ?></h6>
+                                                </div>
+
+                                                <div class="text-end">
+                                                    <a href="admin_addmem.php?flags=2&editNo=<?php echo $memID; ?>"><button class="btn btn-success">Edit</button></a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                        Background Information
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+
+                                                <?php 
+                                                
+                                                //Empty Variables
+                                                $ha = $sn = $tp = $bn = $bt = $cn = $ot = $mth = '';
+
+                                                $sqldi = "SELECT 
+                                                            highest, program, schlName
+                                                        FROM tbeducinfo
+                                                        WHERE memberID=?";
+                                                $datadi = array($memID);
+                                                $stmtdi = $conn->prepare($sqldi);
+                                                $stmtdi->execute($datadi);
+                                                $rowdi = $stmtdi->fetch();
+
+                                                $sqlwork = "SELECT 
+                                                                w.memBusInfo AS businessInfo, w.memBusType AS businessType, 
+                                                                w.memOccuInfo AS occupationInfo, w.memCompName AS companyName,
+                                                                m.monthlySize AS monthlyIncome
+                                                            FROM tbworkinfo w
+                                                            JOIN tbmonthly m ON w.monthlyID = m.monthlyID 
+                                                            WHERE w.memberID=?";
+                                                $datawork = array($memID);
+                                                $stmtwork = $conn->prepare($sqlwork);
+                                                $stmtwork->execute($datawork);
+                                                $rowwork = $stmtwork->fetch();
+
+                                                $ha = $rowdi['highest']; $sn = $rowdi['schlName']; $tp = $rowdi['program'];
+                                                $bn = $rowwork['businessInfo']; $bt = $rowwork['businessType']; 
+                                                $cn = $rowwork['companyName']; $ot = $rowwork['occupationInfo'];
+                                                $mth = $rowwork['monthlyIncome'];
+                                                ?>
+
+                                                <div class="col-md-4">
+                                                    <h6>Highest Attainment : <?php echo $ha; ?></h6>
+                                                    <h6>School Name : <?php echo $sn; ?></h6>
+                                                    <h6>Track / Program : <?php echo $tp; ?></h6>
+                                                </div>
+                                                
+                                                <div class="col-md-4">
+                                                    <h6>Business Name : <?php echo $bn; ?></h6>
+                                                    <h6>Business Type : <?php echo $bt; ?></h6>
+                                                </div>
+                                                
+                                                <div class="col-md-4">
+                                                <h6>Company Name : <?php echo $cn; ?></h6>
+                                                <h6>Occupation Type :  <?php echo $ot; ?></h6>
+                                                <h6>Monthly Income :  <?php echo $mth; ?></h6>
+                                                </div>
+                                            
+                                                <div class="text-end">
+                                                    <a href="admin_addmem.php?flags=3&editNo=<?php echo $memID; ?>"><button class="btn btn-success">Edit</button></a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingFour">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                                        Other Information
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+
+                                                <?php 
+                                                    
+                                                    $sss = $tin = $othID = $othIDno = '';
+                                                    $resi = $resiID = $resyear = $coop = $soc = $hob = '';
+
+                                                    $sqlOth = "SELECT
+                                                                res.resiStatus AS resiStats, inf.InfoStats AS infoStats, 
+                                                                oth.yearStay AS yearStay, oth.socint AS social,
+                                                                oth.hobbies AS hobbies, oth.coop AS cooperative
+                                                            FROM tbotherinfo oth
+                                                            LEFT JOIN tbresistats res ON oth.resID = res.resID
+                                                            LEFT JOIN tbinfostats inf ON oth.othInfoID = inf.othInfoID 
+                                                            WHERE oth.memberID = ?";
+                                                    $dataOth = array($memID);
+                                                    $stmtOth = $conn->prepare($sqlOth);
+                                                    $stmtOth->execute($dataOth);
+                                                    $rowOth = $stmtOth->fetch();
+
+                                                    $resi = $rowOth['resiStats']; $resiID = $rowOth['infoStats']; $resyear = $rowOth['yearStay']; 
+                                                    $coop = $rowOth['cooperative']; $soc = $rowOth['social']; $hob = $rowOth['hobbies'];
+
+                                                ?>
+
+                                                <div class="col-md-4">
+                                                    <h6>Residential Type : <?php echo $resi; ?></h6>
+                                                    <h6>Residential Status : <?php echo $resiID; ?></h6>
+                                                    <h6>Residential Stay : <?php echo $resyear; ?></h6>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <h6>Social Interest : <?php echo $soc; ?></h6>
+                                                    <h6>Hobbies : <?php echo $hob; ?></h6>
+                                                    <h6>Other Cooperatives : <?php echo $coop; ?></h6>
+                                                </div>
+
+                                                <div class="text-end">
+                                                    <a href="admin_addmem.php?flags=4&editNo=<?php echo $memID; ?>"><button class="btn btn-success">Edit</button></a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <?php 
+                                    $uniks = '';
+                                    $sqlmemID = "SELECT * FROM tbuninfo WHERE memberID = ?";
+                                    $datamemID = array($memID);
+                                    $stmtmem = $conn->prepare($sqlmemID);
+                                    $stmtmem->execute($datamemID);
+                                    $rowmem = $stmtmem->fetch();
+                                    $uniks = $rowmem['unID'];
+                                    
+                                ?>
+
+                                <div class="text-end mt-5">
+                                    <a href="admin_paypmes.php?pmes=<?php echo  $uniks; ?>"><button class="btn btn-primary">Payments</button></a>
+                                    <a href="admin_pendings.php"><button class="btn btn-success">Finish</button></a>
+                                </div>
+                            </div>
+
+                            </div> <!-- end of row -->
+                        </fieldset>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </section>    
+</main>
+
+<?php require_once 'sidenavs/centered_footer.php';  ?>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="assets/vendo//r/apexcharts/apexcharts.min.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/chart.js/chart.umd.js"></script>
+<script src="assets/vendor/echarts/echarts.min.js"></script>
+<script src="assets/vendor/quill/quill.min.js"></script>
+<script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="assets/js/main.js"></script>
+<script src="jqueryto/jquerymoto.js"></script>
+<script src="jqueryto/poppermoto.js"></script>
+<script src="jqueryto/bootstrapmoto.js"></script>
+<script src="jqueryto/sweetalertmoto.js"></script>
+<script src="jqueryto/jquerytodiba.min.js"></script>
+<!-- <script src="jqueryto/ajaxmoto.js"></script> -->
+<script src="jqueryto/ajaxiru.js"></script>
+
+
+</body>
+</html>
+<?php 
+    require_once 'process/app_regex.php';
+?>
+<script>
+    $(function() {
+        var active = $('fieldset.active')
+        $('.next, .previous').click(function(e) {
+        e.preventDefault();
+        var target = $(this).closest('fieldset')[this.name]();
+        if (target.length) {
+            active.removeClass('active');
+            target.addClass('active');
+            active = target;
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+
+        $('#highest').on('change', function(){
+            var highID = $(this).val();
+                if(highID){
+                    $.ajax({
+                        type: 'POST',
+                        url: 'process/fetch_region.php',
+                        data: 'highID=' + highID,
+                        success: function(html){
+                            $('#course').html(html);
+                        }
+                    });
+                }else{
+                    $('#course').html('<option value="">For Senior High or College</option>');
+                }
+        });
+    });
+</script>
+
+<script>
+    //Province
+    $(document).ready(function(){
+
+$('#reg').on('change', function(){
+var regID = $(this).val();
+if(regID){
+    $.ajax({
+        type: 'POST',
+        url: 'process/fetch_region.php',
+        data: 'regID=' + regID,
+        success: function(html){
+            $('#prov').html(html);
+            $('#cit').html('<option value="">Select Province First</option>');
+            $('#bar').html('<option value="">Select City First</option>');
+        }
+    });
+}else{
+    $('#prov').html('<option value="">Select Region First</option>');
+    $('#cit').html('<option value="">Select Province First</option>');
+    $('#bar').html('<option value="">Select City First</option>');
+}
+});
+
+//City
+$('#prov').on('change', function(){
+var provID = $(this).val();
+if(provID){
+    $.ajax({
+        type: 'POST',
+        url: 'process/fetch_region.php',
+        data: 'provID=' + provID,
+        success: function(html){
+            $('#cit').html(html);
+            $('#bar').html('<option value="">Select City First</option>');
+        }
+    });
+}else{
+    $('#cit').html('<option value="">Select Province First</option>');
+    $('#bar').html('<option value="">Select City First</option>');
+}
+});
+
+//Baranggay
+$('#cit').on('change', function(){
+var citID = $(this).val();
+if(citID){
+    $.ajax({
+        type: 'POST',
+        url: 'process/fetch_region.php',
+        data: 'citID=' + citID,
+        success: function(html){
+            $('#bar').html(html);
+        }
+    });
+}else{
+    $('#bar').html('<option value="">Select Region First</option>');
+}
+});
+});
+</script>
+
+<script>
+document.getElementById('dateToday').valueAsDate = new Date();
+const dateformat = document.querySelector('#dateformat');
+
+function validateDate(dateString) {
+    const [year, month, day] = dateString.split('-');
+    if (parseInt(year) === 1900) {
+    return false; // reject 1900 as a valid year
+}
+    return true; // allow other dates
+}
+
+validateDate(dateformat.value); // returns false
+</script>
+
+<ul class="nav nav-tabs nav-tabs-bordered" id="borderedTab" role="tablist">
+                            <li class="nav-item flex-fill" role="presentation">
+                            <button class="nav-link w-100 active" id="member" data-bs-toggle="tab" data-bs-target="#meminfo" type="button" role="tab" aria-controls="home" aria-selected="true">Member Details</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                            <button class="nav-link w-100" id="trans" data-bs-toggle="tab" data-bs-target="#translog" type="button" role="tab" aria-controls="profile" aria-selected="false">Transaction Logs</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content pt-2" id="borderedTabContent">
+                            
+                            <div class="tab-pane fade show active" id="meminfo" role="tabpanel" aria-labelledby="member">
+
+                                <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                                    <li class="nav-item flex-fill" role="presentation">
+                                        <button class="nav-link w-100 active" id="basic" data-bs-toggle="tab" data-bs-target="#basicinfo" type="button" role="tab" aria-controls="basic" aria-selected="true">Basic</button>
+                                    </li>
+                                    <li class="nav-item flex-fill" role="presentation">
+                                        <button class="nav-link w-100" id="contact" data-bs-toggle="tab" data-bs-target="#contactinfo" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+                                    </li>
+                                    <li class="nav-item flex-fill" role="presentation">
+                                        <button class="nav-link w-100" id="personal" data-bs-toggle="tab" data-bs-target="#personalinfo" type="button" role="tab" aria-controls="personal" aria-selected="false">Personal</button>
+                                    </li>
+                                    <li class="nav-item flex-fill" role="presentation">
+                                        <button class="nav-link w-100" id="ids" data-bs-toggle="tab" data-bs-target="#idsinfo" type="button" role="tab" aria-controls="ids" aria-selected="false">Identification</button>
+                                    </li>
+                                    <li class="nav-item flex-fill" role="presentation">
+                                        <button class="nav-link w-100" id="pmes" data-bs-toggle="tab" data-bs-target="#pmesinfo" type="button" role="tab" aria-controls="pmes" aria-selected="false">PMES</button>
+                                    </li>
+                                    <li class="nav-item flex-fill" role="presentation">
+                                        <button class="nav-link w-100" id="others" data-bs-toggle="tab" data-bs-target="#othersinfo" type="button" role="tab" aria-controls="others" aria-selected="false">Others</button>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                            
+                                    <div class="tab-pane fade show active" id="basicinfo" role="tabpanel" aria-labelledby="basic">
+                                        
+                                        <div class="row">
+
+                                            <div class="col-md-12 mt-4 mb-4 text-center">
+                                                <h4 id="headline"><b>Basic Information</b></h4>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Last Name</h6>
+                                            </div>   
+                                            
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $lname; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Birthdate</h6>
+                                            </div>   
+                                            
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $bdate; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>First Name</h6>
+                                            </div>   
+                                            
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $fname; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Age</h6>
+                                            </div>   
+                                            
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $age; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Middle Name</h6>
+                                            </div>   
+                                            
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $mname; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Marital Status</h6>
+                                            </div>   
+                                            
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $marital; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Suffix</h6>
+                                            </div>   
+                                            
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $suffix; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Sex</h6>
+                                            </div>   
+                                            
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo ($sex == 1) ? 'Female' : 'Male' ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Nickname</h6>
+                                            </div>   
+                                            
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $nickname; ?></b></h6>
+                                            </div>
+                                            
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="tab-pane fade" id="contactinfo" role="tabpanel" aria-labelledby="contact">
+                                    
+                                        <div class="row">
+
+                                            <div class="col-md-12 mt-4 mb-4 text-center">
+                                                <h4 id="headline"><b>Contact Information</b></h4>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>House Address</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $house; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Email Address</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $email ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Region</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $reg; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>(1)Mobile #</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $mobile1; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Province</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $prov; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>(2)Mobile #</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $mobile2; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Municipality</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $mun; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Landline</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $landline; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Baranggay</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $brgy; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-6"></div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>ZIP Code</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $zip; ?></b></h6>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="tab-pane fade" id="personalinfo" role="tabpanel" aria-labelledby="personal">
+                                        
+                                        <div class="row">
+
+                                            <div class="col-md-12 mt-4 mb-4 text-center">
+                                                <h4 id="headline"><b>Personal Information</b></h4>
+                                            </div>
+
+                                            <div class="col-md-2 text-start">
+                                                <h6>Highest Level</h6>
+                                            </div>   
+
+                                            <div class="col-md-2 text-end">
+                                                <h6><b><?php echo $high; ?></b></h6>
+                                            </div>
+                                            <!-- $bus = $busType = $occu = $comp = $monthly =  -->
+                                            <div class="col-md-2 text-start">
+                                                <h6>Business</h6>
+                                            </div>   
+
+                                            <div class="col-md-2 text-end">
+                                                <h6><b><?php echo ($bus == '') ? ' ': $bus ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-2 text-start">
+                                                <h6>Company</h6>
+                                            </div>   
+
+                                            <div class="col-md-2 text-end">
+                                                <h6><b><?php echo ($comp == '') ? ' ': $comp ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-2 text-start">
+                                                <h6>School Name</h6>
+                                            </div>   
+
+                                            <div class="col-md-2 text-end">
+                                                <h6><b><?php echo $schlName; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-2 text-start">
+                                                <h6>Business Type</h6>
+                                            </div>   
+
+                                            <div class="col-md-2 text-end">
+                                                <h6><b><?php echo ($busType == '') ? ' ': $busType ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-2 text-start">
+                                                <h6>Occupation</h6>
+                                            </div>   
+
+                                            <div class="col-md-2 text-end">
+                                                <h6><b><?php echo ($occu == '') ? ' ': $occu ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Program</h6>
+                                            </div>   
+
+                                            <div class="col-md-5 text-end">
+                                                <h6><b><?php echo ($prog == 'N/A') ? ' ' : $prog  ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-2 text-start">
+                                                <h6>Monthly Income</h6>
+                                            </div>   
+
+                                            <div class="col-md-2 text-end">
+                                                <h6><b><?php echo ($monthly == 0) ? ' ' : $monthly ?></b></h6>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="tab-pane fade" id="idsinfo" role="tabpanel" aria-labelledby="ids">
+                                        
+                                        <div class="row">
+
+                                            <div class="col-md-12 mt-4 mb-4 text-center">
+                                                <h4 id="headline"><b>Identification(ID)</b></h4>
+                                            </div>
+
+                                            <div class="col-md-4 text-start">
+                                                <h6>(SSS)Social Security No.</h6>
+                                            </div>   
+
+                                            <div class="col-md-8 text-start">
+                                                <h6><b><?php echo $sss;?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-4 text-start">
+                                                <h6>(TIN)Tax Identification No.</h6>
+                                            </div>   
+
+                                            <div class="col-md-8 text-start">
+                                                <h6><b><?php echo $tin; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-4 text-start">
+                                                <h6>Other ID</h6>
+                                            </div>   
+
+                                            <div class="col-md-8 text-start">
+                                                <h6><b><?php echo $otherID; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-4 text-start">
+                                                <h6>Other ID No</h6>
+                                            </div>   
+
+                                            <div class="col-md-8 text-start">
+                                                <h6><b><?php echo $otherIDNo; ?></b></h6>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+<!-- //  -->
+                                    <div class="tab-pane fade" id="pmesinfo" role="tabpanel" aria-labelledby="pmes">
+                                        
+                                        <div class="row">
+
+                                            <div class="col-md-12 mt-4 mb-4 text-center">
+                                                <h4 id="headline"><b>Pre-Membership Seminar Education</b></h4>
+                                            </div>
+
+                                            <div class="col-md-4 text-start">
+                                                <h6>Trained By</h6>
+                                            </div>   
+
+                                            <div class="col-md-8 text-start">
+                                                <h6><b><?php ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-4 text-start">
+                                                <h6>Referred By</h6>
+                                            </div>   
+
+                                            <div class="col-md-8 text-start">
+                                                <h6><b><?php ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-4 text-start">
+                                                <h6>Approved By</h6>
+                                            </div>   
+
+                                            <div class="col-md-8 text-start">
+                                                <h6><b><?php ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-4 text-start">
+                                                <h6>Joined Date</h6>
+                                            </div>   
+
+                                            <div class="col-md-8 text-start">
+                                                <h6><b><?php ?></b></h6>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="tab-pane fade" id="othersinfo" role="tabpanel" aria-labelledby="others">
+
+                                        <div class="row">
+
+                                            <div class="col-md-12 mt-4 mb-4 text-center">
+                                                <h4 id="headline"><b>Other Information</b></h4>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Residential Status</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $resiID; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Social Interest</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $soc; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Residential Ownership</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $resi; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 text-start">
+                                                <h6>Hobbies</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 text-end">
+                                                <h6><b><?php echo $hob; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 mb-5 text-start">
+                                                <h6>Residing Year</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 mb-5 text-end">
+                                                <h6><b><?php echo $resyear; ?></b></h6>
+                                            </div>
+
+                                            <div class="col-md-3 mb-5 text-start">
+                                                <h6>Other Coop</h6>
+                                            </div>   
+
+                                            <div class="col-md-3 mb-5 text-end">
+                                                <h6><b><?php echo $coop; ?></b></h6>
+                                            </div>
+
+                                            
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="translog" role="tabpanel" aria-labelledby="trans">
+                                <!-- Bordered Tabs Justified -->
+                                <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                                
+                                    <li class="nav-item flex-fill" role="presentation">
+                                    <button class="nav-link w-100 active" id="deplog" data-bs-toggle="tab" data-bs-target="#depositlogs" type="button" role="tab" aria-controls="home" aria-selected="true">Deposit Logs</button>
+                                    </li>
+
+                                    <li class="nav-item flex-fill" role="presentation">
+                                    <button class="nav-link w-100" id="loanlog" data-bs-toggle="tab" data-bs-target="#loanlogs" type="button" role="tab" aria-controls="profile" aria-selected="false">Loan Logs</button>
+                                    </li>
+                                
+                                </ul>
+                                <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+
+                                    <div class="tab-pane fade show active" id="depositlogs" role="tabpanel" aria-labelledby="deplog">
+
+                                        <table class="table table-hover mt-3">
+                                            <thead style="width : 100%;">
+                                                <th scope="col" style="width: 5%;">#</th>
+                                                <th scope="col" style="width: 15%;">Deposit</th>
+                                                <th scope="col"  style="width: 15%;">Amount</th>
+                                                <th scope="col"  style="width: 15%;">Invoice #</th>
+                                                <th scope="col"  style="width: 15%;">Cheque #</th>
+                                                <th scope="col"  style="width: 15%;">Date</th>
+                                                <th scope="col"  style="width: 15%;">Time</th>
+                                            </thead>
+                                            <tbody style="width : 100%;">
+                                                <?php 
+                                                
+                                                    $sqlDephis = "SELECT
+                                                                    d.depDesc AS DepType, di.amount AS DepAm, 
+                                                                    di.InvoiceNo AS inv, di.CheckRef AS chq,
+                                                                    di.depDate AS DayPay, di.depTime AS DayTime
+                                                                FROM tbdephisinfo di
+                                                                JOIN tbdeptype d ON di.deptypeID = d.deptypeID
+                                                                WHERE memberID = ? ORDER BY di.depTime DESC 
+                                                                LIMIT 5";
+                                                    $dataDephis = array($memberID);
+                                                    $stmtDephis = $conn->prepare($sqlDephis);
+                                                    $stmtDephis->execute($dataDephis);
+                                                    $i = 1;
+                                                    $table = '';
+                                                    while($rowDephis = $stmtDephis->fetch()){
+                                                        // $depType = $rowDephis['DepType']; $depAm = $rowDephis['DepAm'];
+                                                        // $inv = $rowDephis['inv']; $chq = $rowDephis['chq']; $TD = $rowDephis['TD'];
+                                                        $table .= '<tr>
+                                                                    <td>'.$i.'</td>
+                                                                    <td>'.$rowDephis['DepType'].'</td>
+                                                                    <td>'.$rowDephis['DepAm'].'</td>
+                                                                    <td>'.$rowDephis['inv'].'</td>
+                                                                    <td>'.$rowDephis['chq'].'</td>
+                                                                    <td>'.$rowDephis['DayPay'].'</td>
+                                                                    <td>'.$rowDephis['DayTime'].'</td>
+                                                                </tr>';
+                                                        $i++;
+                                                    }
+                                                    echo $table;
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    
+                                    </div>
+                                    
+                                    <div class="tab-pane fade" id="loanlogs" role="tabpanel" aria-labelledby="loanlog">
+                                    </div>
+
+                                </div><!-- End Bordered Tabs Justified -->
+                            </div>
+
+                        </div><!-- End Bordered Tabs -->
